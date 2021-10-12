@@ -9,6 +9,7 @@ let mainLowTemp = document.getElementById("main-low-temp");
 let mainWind = document.getElementById("main-wind");
 let mainHumidity = document.getElementById("main-humidity");
 let mainUV = document.getElementById("main-uv");
+let fiveDay = document.getElementById("5-day")
 
 let displayData = function (cityData) {
     // display todays data differently then the rest
@@ -24,14 +25,14 @@ let displayData = function (cityData) {
         "src",
         `https://openweathermap.org/img/wn/${cityData[0].weather[0].icon}@2x.png`
     );
-    mainCity.textContent = city + "(" + formatedDate + ")";
+    mainCity.textContent = city + " (" + formatedDate + ")";
     mainTemp.textContent = "Min Temp: " + cityData[0].temp.min + "°F";
     mainLowTemp.textContent = "Max Temp: " + cityData[0].temp.max + "°F";
     mainWind.textContent = "Wind: " + cityData[0].wind_speed + " MPH";
     mainHumidity.textContent = "Humidity: " + cityData[0].humidity + "%";
     mainUV.textContent = "UV Index: " + cityData[0].uvi;
 
-    mainCity.appendChild(iconEl);
+    mainTemp.insertAdjacentElement('beforebegin',iconEl);
 
     // Loop through data to create cards for 5 days except the current day
     for (let i = 1; i < 6; i++) {
@@ -41,6 +42,7 @@ let displayData = function (cityData) {
             d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
 
         // Create Elements
+        let cardContainerEl = document.createElement("div")
         let containerEl = document.createElement("div");
         let dateEl = document.createElement("h1");
         let iconEl = document.createElement("img");
@@ -61,8 +63,16 @@ let displayData = function (cityData) {
         windEl.textContent = "Wind: " + cityData[i].wind_speed + " MPH";
         humidityEl.textContent = "Humidity: " + cityData[i].humidity + "%";
         uvEl.textContent = "UV Index: " + cityData[i].uvi;
-        // adding a class so I can clear them out on function call if they exist
-        containerEl.setAttribute("class", "remove");
+        cardContainerEl.classList.add("remove", "card", "bg-light", "mb-3", "d-flex", "col-2")
+        containerEl.setAttribute("class", "card-body")
+        dateEl.setAttribute("class", "card-title")
+        tempMinEl.setAttribute("class", "card-text")
+        tempMaxEl.setAttribute("class", "card-text")
+        windEl.setAttribute("class", "card-text")
+        humidityEl.setAttribute("class", "card-text")
+        uvEl.setAttribute("class", "card-text")
+        
+        
 
         // Append Elements
         containerEl.appendChild(dateEl);
@@ -72,7 +82,8 @@ let displayData = function (cityData) {
         containerEl.appendChild(windEl);
         containerEl.appendChild(humidityEl);
         containerEl.appendChild(uvEl);
-        body.appendChild(containerEl);
+        cardContainerEl.appendChild(containerEl)
+        fiveDay.appendChild(cardContainerEl);
     }
 };
 

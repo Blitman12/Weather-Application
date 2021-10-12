@@ -1,7 +1,7 @@
 body {
     font-family: sans-serif;
   }
-  
+/*   
   #title {
     text-align: center;
     color: white;
@@ -23,9 +23,9 @@ body {
     display: flex;
     flex-direction: column;
   }
-  
-  .wrapper{
+   */
+  /* .wrapper{
     display: flex;
     justify-content: space-between;
-  }
+  } */
   
