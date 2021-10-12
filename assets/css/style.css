@@ -1,0 +1,31 @@
+body {
+    font-family: sans-serif;
+  }
+  
+  #title {
+    text-align: center;
+    color: white;
+    background-color: blue
+  }
+  
+  #search-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+  }
+  
+  #search-form button {
+    margin-top: 20px;
+    background: blueviolet;
+  }
+  
+  #current-day-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .wrapper{
+    display: flex;
+    justify-content: space-between;
+  }
+  

@@ -2,15 +2,35 @@
 <html>
 
 <head>
-	<title>Weather</title>
-	<meta charset="UTF-8" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Weather</title>
+    <meta charset="UTF-8" />
 </head>
 
 <body>
-	<div id="app"></div>
+    <h1 id="title">Weather Dashboard</h1>
 
-	<script src="assets/js/index.js">
-	</script>
+    <div class="wrapper">
+
+        <form id="search-form">
+            <h2>Search for a City:</h2>
+            <input placeholder="Phoenix" type="text"></input>
+            <button>Search</button>
+        </form>
+
+        <div id="current-day-container">
+            <h2 id="main-title">Phoenix (10/11/21)</h2>
+            <p id="main-temp">High: </p>
+            <p id="main-low-temp">Low: </p>
+            <p id="main-wind">Wind: </p>
+            <p id="main-humidity">Humidity: </p>
+            <p id="main-uv">UV Index: </p>
+        </div>
+
+    </div>
+
+    <script src="assets/js/index.js">
+    </script>
 </body>
 
 </html>
