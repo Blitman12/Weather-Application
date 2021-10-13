@@ -10,6 +10,12 @@ let mainWind = document.getElementById("main-wind");
 let mainHumidity = document.getElementById("main-humidity");
 let mainUV = document.getElementById("main-uv");
 let fiveDay = document.getElementById("5-day")
+let mainIconEl = document.getElementById("main-icon")
+let searchHistoryEl = document.getElementById("search-history")
+
+let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+
 
 let displayData = function (cityData) {
     // display todays data differently then the rest
@@ -18,10 +24,10 @@ let displayData = function (cityData) {
     let formatedDate =
         d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
 
-    let iconEl = document.createElement("img");
+    // let iconEl = document.createElement("img");
 
     // Modify Elements
-    iconEl.setAttribute(
+    mainIconEl.setAttribute(
         "src",
         `https://openweathermap.org/img/wn/${cityData[0].weather[0].icon}@2x.png`
     );
@@ -32,7 +38,7 @@ let displayData = function (cityData) {
     mainHumidity.textContent = "Humidity: " + cityData[0].humidity + "%";
     mainUV.textContent = "UV Index: " + cityData[0].uvi;
 
-    mainTemp.insertAdjacentElement('beforebegin',iconEl);
+    mainTemp.insertAdjacentElement('beforebegin', mainIconEl);
 
     // Loop through data to create cards for 5 days except the current day
     for (let i = 1; i < 6; i++) {
@@ -57,13 +63,14 @@ let displayData = function (cityData) {
             "src",
             `https://openweathermap.org/img/wn/${cityData[i].weather[0].icon}@2x.png`
         );
+        iconEl.setAttribute("id", "icon")
         dateEl.textContent = formatedDate;
         tempMinEl.textContent = "Min Temp: " + cityData[i].temp.min + "°F";
         tempMaxEl.textContent = "Max Temp: " + cityData[i].temp.max + "°F";
         windEl.textContent = "Wind: " + cityData[i].wind_speed + " MPH";
         humidityEl.textContent = "Humidity: " + cityData[i].humidity + "%";
         uvEl.textContent = "UV Index: " + cityData[i].uvi;
-        cardContainerEl.classList.add("remove", "card", "bg-light", "mb-3", "d-flex", "col-2")
+        cardContainerEl.classList.add("remove", "card", "bg-light")
         containerEl.setAttribute("class", "card-body")
         dateEl.setAttribute("class", "card-title")
         tempMinEl.setAttribute("class", "card-text")
@@ -71,8 +78,8 @@ let displayData = function (cityData) {
         windEl.setAttribute("class", "card-text")
         humidityEl.setAttribute("class", "card-text")
         uvEl.setAttribute("class", "card-text")
-        
-        
+
+
 
         // Append Elements
         containerEl.appendChild(dateEl);
@@ -108,10 +115,14 @@ let getLatAndLonCall = function (event) {
     )
         .then((response) => {
             if (response.ok) {
+                searchHistory.push(cityName)
+                console.log(cityName)
+                storeCity()
                 response.json().then((data) => {
                     let clearPrevData = document.getElementsByClassName("remove");
                     if (clearPrevData.length > 0) {
                         for (let i = 0; i < clearPrevData.length; i++) {
+                            clearPrevData[i].classList.remove("card", "bg-light")
                             clearPrevData[i].innerHTML = "";
                         }
                     }
@@ -130,8 +141,70 @@ let getLatAndLonCall = function (event) {
         });
 };
 
+// not event version of api call
+let historyLatCall = function () {
+    fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
+    )
+        .then((response) => {
+            if (response.ok) {
+                response.json().then((data) => {
+                    let clearPrevData = document.getElementsByClassName("remove");
+                    if (clearPrevData.length > 0) {
+                        for (let i = 0; i < clearPrevData.length; i++) {
+                            clearPrevData[i].classList.remove("card", "bg-light")
+                            clearPrevData[i].innerHTML = "";
+                        }
+                    }
+                    let latitude = data.coord.lat;
+                    let longitude = data.coord.lon;
+                    oneCall(latitude, longitude);
+                });
+            } else {
+                alert(
+                    "Error: Please ensure your spelling is correct or select another city"
+                );
+            }
+        })
+        .catch(function (error) {
+            alert("Unable to connect to OpenWeather");
+        });
+};
+
+
+
+let storeCity = function () {
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory))
+    loadHistory()
+}
+
+let loadHistory = function () {
+    let loadedHistory = JSON.parse(localStorage.getItem("searchHistory"))
+
+    if (!loadedHistory) {
+        return
+    }
+
+    for (let i = 0; i < loadedHistory.length; i++) {
+        let historyButton = document.createElement("button")
+        historyButton.setAttribute("class", "mt-3")
+        historyButton.textContent = loadedHistory[i]
+        console.log(historyButton)
+        searchHistoryEl.appendChild(historyButton)
+    }
+}
+
+let historySearch = function (event) {
+    event.preventDefault;
+    city = event.target.innerText
+    historyLatCall()
+}
+
 // Initiates the weather search
 if (searchButton) {
     searchButton.addEventListener("click", getLatAndLonCall);
 }
 
+searchHistoryEl.addEventListener("click", historySearch)
+
+loadHistory()

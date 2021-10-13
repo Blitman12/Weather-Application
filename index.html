@@ -15,36 +15,40 @@
     <div class="container-fluid d-flex justify-content-between">
 
         <div>
+
             <form id="search-form" class="col-3 d-flex flex-column" style="width: 20rem">
                 <h2>Search for a City:</h2>
                 <input placeholder="Phoenix" type="text"></input>
                 <button class="mt-2">Search</button>
             </form>
 
-            <div class="mt-4 border-top border-secondary" style="width: 20rem">
-                <div class="">
-                    <p class="">With supporting text below as a natural lead-in to additional content.</p>
+            <div class="mt-4 border-top border-secondary">
+                <ul class="d-flex flex-column w-100 align-items-stretch" id="search-history">
+
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="col-9">
+            <div class="card text-white bg-dark mb-3" id="current-day-container">
+                <div class="card-body">
+                    <h2 id="main-title" class="card-title">Phoenix</h2>
+                    <img id="main-icon" />
+                    <p id="main-temp" class="card-text">High: 99°F</p>
+                    <p id="main-low-temp" class="card-text">Low: 80°F</p>
+                    <p id="main-wind" class="card-text">Wind: 10MPH</p>
+                    <p id="main-humidity" class="card-text">Humidity: 2%</p>
+                    <p id="main-uv" class="card-text">UV Index: 5</p>
                 </div>
             </div>
-        </div>
 
-    <div class="col-9">
-        <div class="card text-white bg-dark mb-3" id="current-day-container">
-            <div class="card-body">
-                <h2 id="main-title" class="card-title">Phoenix</h2>
-                <p id="main-temp" class="card-text">High: 99°F</p>
-                <p id="main-low-temp" class="card-text">Low: 80°F</p>
-                <p id="main-wind" class="card-text">Wind: 10MPH</p>
-                <p id="main-humidity" class="card-text">Humidity: 2%</p>
-                <p id="main-uv" class="card-text">UV Index: 5</p>
+            <h2>5 day forecast</h2>
+            <div id="5-day" class="container-fluid row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
             </div>
-        </div>
 
-        <div id="5-day">
 
         </div>
-    </div>
-
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
