@@ -1,7 +1,25 @@
 body {
     font-family: sans-serif;
   }
-  
+
+p {
+  font-size: small;
+}
+
+h2 {
+  font-size:x-large
+}
+
+ul {
+  padding: 0;
+}
+
+
+.uvClass {
+  width: 100px;
+}
+
+/*   
   #title {
     text-align: center;
     color: white;
@@ -23,9 +41,9 @@ body {
     display: flex;
     flex-direction: column;
   }
-  
-  .wrapper{
+   */
+  /* .wrapper{
     display: flex;
     justify-content: space-between;
-  }
+  } */
   
