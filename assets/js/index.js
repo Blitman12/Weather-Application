@@ -115,8 +115,10 @@ let getLatAndLonCall = function (event) {
     )
         .then((response) => {
             if (response.ok) {
-                searchHistory.push(cityName)
-                console.log(cityName)
+                let set = new Set(searchHistory);
+                set.add(cityName)
+                const fromArr = Array.from(set)
+                searchHistory = fromArr
                 storeCity()
                 response.json().then((data) => {
                     let clearPrevData = document.getElementsByClassName("remove");
@@ -137,8 +139,10 @@ let getLatAndLonCall = function (event) {
             }
         })
         .catch(function (error) {
+            console.log(error)
             alert("Unable to connect to OpenWeather");
         });
+        city = "";
 };
 
 // not event version of api call
@@ -180,11 +184,20 @@ let storeCity = function () {
 
 let loadHistory = function () {
     let loadedHistory = JSON.parse(localStorage.getItem("searchHistory"))
+    let doesExist = document.getElementsByClassName("mt-3")
 
     if (!loadedHistory) {
         return
     }
 
+
+    // this checks if the history button list is already created
+    // if it is then it will erase it and then rebuild so there are not duplicates
+    if (doesExist.length > 0) {
+        searchHistoryEl.innerHTML = ""
+    }
+
+    // creates the buttons to use from history
     for (let i = 0; i < loadedHistory.length; i++) {
         let historyButton = document.createElement("button")
         historyButton.setAttribute("class", "mt-3")
