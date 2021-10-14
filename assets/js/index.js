@@ -16,15 +16,32 @@ let searchHistoryEl = document.getElementById("search-history")
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 
 
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+let uvDisplayChange = function (uvIndex, element) {
+    console.log(uvIndex, element)
+    if (uvIndex < 2){
+        element.classList.remove("bg-warning", "bg-danger")
+        element.classList.add("bg-success", "uvClass")
+    } else if (uvIndex > 2 && uvIndex < 5) {
+        element.classList.remove("bg-success", "bg-danger")
+        element.classList.add("bg-warning", "uvClass")
+    } else {
+        element.classList.remove("bg-success", "bg-warning")
+        element.classList.add("bg-danger", "uvClass")
+    }
+}
 
 let displayData = function (cityData) {
-    // display todays data differently then the rest
+    
+    // display todays date data differently then the rest
     // Get the correctly formatted date
     let d = new Date(cityData[0].dt * 1000);
     let formatedDate =
         d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
-
-    // let iconEl = document.createElement("img");
+  
 
     // Modify Elements
     mainIconEl.setAttribute(
@@ -37,6 +54,7 @@ let displayData = function (cityData) {
     mainWind.textContent = "Wind: " + cityData[0].wind_speed + " MPH";
     mainHumidity.textContent = "Humidity: " + cityData[0].humidity + "%";
     mainUV.textContent = "UV Index: " + cityData[0].uvi;
+    uvDisplayChange(cityData[0].uvi, mainUV)
 
     mainTemp.insertAdjacentElement('beforebegin', mainIconEl);
 
@@ -50,13 +68,12 @@ let displayData = function (cityData) {
         // Create Elements
         let cardContainerEl = document.createElement("div")
         let containerEl = document.createElement("div");
-        let dateEl = document.createElement("h1");
+        let dateEl = document.createElement("h2");
         let iconEl = document.createElement("img");
         let tempMinEl = document.createElement("p");
         let tempMaxEl = document.createElement("p");
         let windEl = document.createElement("p");
         let humidityEl = document.createElement("p");
-        let uvEl = document.createElement("p");
 
         // Modify Elements
         iconEl.setAttribute(
@@ -69,7 +86,6 @@ let displayData = function (cityData) {
         tempMaxEl.textContent = "Max Temp: " + cityData[i].temp.max + "°F";
         windEl.textContent = "Wind: " + cityData[i].wind_speed + " MPH";
         humidityEl.textContent = "Humidity: " + cityData[i].humidity + "%";
-        uvEl.textContent = "UV Index: " + cityData[i].uvi;
         cardContainerEl.classList.add("remove", "card", "bg-light")
         containerEl.setAttribute("class", "card-body")
         dateEl.setAttribute("class", "card-title")
@@ -77,7 +93,6 @@ let displayData = function (cityData) {
         tempMaxEl.setAttribute("class", "card-text")
         windEl.setAttribute("class", "card-text")
         humidityEl.setAttribute("class", "card-text")
-        uvEl.setAttribute("class", "card-text")
 
 
 
@@ -88,7 +103,6 @@ let displayData = function (cityData) {
         containerEl.appendChild(tempMaxEl);
         containerEl.appendChild(windEl);
         containerEl.appendChild(humidityEl);
-        containerEl.appendChild(uvEl);
         cardContainerEl.appendChild(containerEl)
         fiveDay.appendChild(cardContainerEl);
     }
@@ -108,7 +122,7 @@ let oneCall = function (latitude, longitude) {
 // Gets the Lat and Long of the selected city and passes it to oneCall()
 let getLatAndLonCall = function (event) {
     event.preventDefault();
-    let cityName = selectedCity.value;
+    let cityName = capitalize(selectedCity.value);
     city = cityName;
     fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
@@ -142,7 +156,6 @@ let getLatAndLonCall = function (event) {
             console.log(error)
             alert("Unable to connect to OpenWeather");
         });
-        city = "";
 };
 
 // not event version of api call
@@ -200,9 +213,8 @@ let loadHistory = function () {
     // creates the buttons to use from history
     for (let i = 0; i < loadedHistory.length; i++) {
         let historyButton = document.createElement("button")
-        historyButton.setAttribute("class", "mt-3")
+        historyButton.classList.add("mt-3", "bg-primary")
         historyButton.textContent = loadedHistory[i]
-        console.log(historyButton)
         searchHistoryEl.appendChild(historyButton)
     }
 }
