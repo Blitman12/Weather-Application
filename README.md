@@ -7,7 +7,7 @@
 [website](https://blitman12.github.io/Weather-Application/)
 
 ## Screenshot
-![Screenshot](/assets/image/capture.png)
+![Screenshot](assets/image/capture.png)
 
 
 ## License
